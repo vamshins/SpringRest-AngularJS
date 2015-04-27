@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.unm.registration.model.User;
 import edu.unm.registration.model.VknsSpriden;
 import edu.unm.registration.service.exception.ServiceException;
 import edu.unm.registration.service.impl.UserService;
 import edu.unm.registration.service.impl.VknsSpridenService;
-import edu.unm.registration.service.support.dto.User;
 
 @Controller
 @RequestMapping(value="/user")
@@ -29,7 +29,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	VknsSpridenService service1;
+	VknsSpridenService spridenService;
 
 	/*
 	 * This method will list all existing employees.
@@ -50,10 +50,9 @@ public class UserController {
 		return spridens;	
 	}*/
 	
-
 	@RequestMapping("/list")
-	public @ResponseBody List<VknsSpriden> listEmployees(ModelMap model) {
-		List<VknsSpriden> spridens = service1.findAllSpridens();
+	public @ResponseBody List<VknsSpriden> listSpridens(ModelMap model) {
+		List<VknsSpriden> spridens = spridenService.findAllSpridens();
 		return spridens;	
 	}
 	

@@ -4,8 +4,12 @@ package edu.unm.registration.dao;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.LockMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 
 import edu.unm.registration.model.VknsSpriden;
@@ -18,25 +22,25 @@ import edu.unm.registration.model.VknsSpriden;
 @Repository("vknsSpridenDao")
 public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 
-	/*private static final Log log = LogFactory.getLog(VknsSpridenDaoImpl.class);
+	private static final Log log = LogFactory.getLog(VknsSpridenDaoImpl.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	/*private final SessionFactory sessionFactory = getSessionFactory();
 
-	protected SessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		try {
 			return (SessionFactory) new InitialContext()
 					.lookup("SessionFactory");
+			return getSession().getSessionFactory();
 		} catch (Exception e) {
 			log.error("Could not locate SessionFactory in JNDI", e);
 			throw new IllegalStateException(
 					"Could not locate SessionFactory in JNDI");
 		}
-	}
-
+	} */
 	public void persist(VknsSpriden transientInstance) {
 		log.debug("persisting VknsSpriden instance");
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
+			getSession().persist(transientInstance);
 			log.debug("persist successful");
 		} catch (RuntimeException re) {
 			log.error("persist failed", re);
@@ -47,7 +51,7 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 	public void attachDirty(VknsSpriden instance) {
 		log.debug("attaching dirty VknsSpriden instance");
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -58,7 +62,7 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 	public void attachClean(VknsSpriden instance) {
 		log.debug("attaching clean VknsSpriden instance");
 		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
+			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");
 		} catch (RuntimeException re) {
 			log.error("attach failed", re);
@@ -69,7 +73,7 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 	public void delete(VknsSpriden persistentInstance) {
 		log.debug("deleting VknsSpriden instance");
 		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
+			getSession().delete(persistentInstance);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -80,8 +84,7 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 	public VknsSpriden merge(VknsSpriden detachedInstance) {
 		log.debug("merging VknsSpriden instance");
 		try {
-			VknsSpriden result = (VknsSpriden) sessionFactory
-					.getCurrentSession().merge(detachedInstance);
+			VknsSpriden result = (VknsSpriden) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -90,11 +93,12 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 		}
 	}
 
-	public VknsSpriden findById(java.lang.String id) {
-		log.debug("getting VknsSpriden instance with id: " + id);
+	public List<VknsSpriden> findById(java.lang.String id) {
+		/*log.debug("getting VknsSpriden instance with id: " + id);
+		System.out.println("getting VknsSpriden instance with id: " + id);
 		try {
-			VknsSpriden instance = (VknsSpriden) sessionFactory
-					.getCurrentSession().get("VknsSpriden", id);
+			VknsSpriden instance = (VknsSpriden) getSession().get(VknsSpriden.class, id);
+			System.out.println(instance.getSpridenFirstName());
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
@@ -104,13 +108,20 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;
-		}
+		}*/
+		
+		/*Criteria criteria = getSession().createCriteria(VknsSpriden.class).add(Restrictions.eq("spridenId", id));
+		return  (VknsSpriden) criteria.uniqueResult();*/
+		
+		String hql = "FROM VknsSpriden E WHERE E.spridenId = '" + id +"'";
+		Query query = getSession().createQuery(hql);
+		return  (List<VknsSpriden>) query.list();
 	}
 
 	public List findByExample(VknsSpriden instance) {
 		log.debug("finding VknsSpriden instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession()
+			List results = getSession()
 					.createCriteria("VknsSpriden")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: "
@@ -120,10 +131,6 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 			log.error("find by example failed", re);
 			throw re;
 		}
-	}*/
-
-	public void saveSpriden(VknsSpriden employee) {
-		persist(employee);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,10 +139,14 @@ public class VknsSpridenDaoImpl extends AbstractDao implements VknsSpridenDao{
 		System.out.println(criteria.list());
 		return (List<VknsSpriden>) criteria.list();
 	}
+	
+	/*public void saveSpriden(VknsSpriden employee) {
+		persist(employee);
+	}
 
 	public void deleteSpridenbyId(String id) {
 		Query query = getSession().createSQLQuery("delete from Employee where ssn = :id");
 		query.setString("ssn", id);
 		query.executeUpdate();
-	}
+	}*/
 }

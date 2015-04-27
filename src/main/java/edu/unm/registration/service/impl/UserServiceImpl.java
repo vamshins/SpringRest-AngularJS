@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.unm.registration.dao.UserDao;
+import edu.unm.registration.model.User;
 import edu.unm.registration.service.exception.ServiceException;
-import edu.unm.registration.service.support.dto.User;
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserService {

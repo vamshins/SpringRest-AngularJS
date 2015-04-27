@@ -2,7 +2,7 @@ package edu.unm.registration.dao;
 
 import java.util.List;
 
-import edu.unm.registration.service.support.dto.User;
+import edu.unm.registration.model.User;
 
 public interface UserDao {
 

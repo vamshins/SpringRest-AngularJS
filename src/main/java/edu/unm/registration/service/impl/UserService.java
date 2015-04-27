@@ -2,8 +2,8 @@ package edu.unm.registration.service.impl;
 
 import java.util.List;
 
+import edu.unm.registration.model.User;
 import edu.unm.registration.service.exception.ServiceException;
-import edu.unm.registration.service.support.dto.User;
 
 public interface UserService {
 

@@ -6,13 +6,13 @@
     <session-factory name="devl">
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-        <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.url">jdbc:oracle:thin:@<Hostname>:<Port>:<Schema></property>
-        <property name="hibernate.connection.username"></property>
-        <property name="hibernate.default_schema"></property> <!-- This has to be in upper case -->
+        <property name="hibernate.connection.password">Ugadawg9</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@stella.unm.edu:1523:DEVL</property>
+        <property name="hibernate.connection.username">stirlingcrow</property>
+        <property name="hibernate.default_schema">STIRLINGCROW</property> <!-- This has to be in upper case -->
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
-        <mapping resource="VknsSpriden.hbm.xml" />
+        <mapping class="edu.unm.registration.model.VknsSpriden" resource="VknsSpriden.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
